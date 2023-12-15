@@ -19,3 +19,13 @@ class ClassLinear(nn.Module):
     def forward(self, X: Tensor) -> Tensor:
         x = torch.tensor_split(X, self.num_classes, dim=1)
         return torch.cat([ net(x[i]) for i, net in enumerate(self.net) ], dim=1)
+
+class PaddedSoftmax(nn.Module):
+    '''Softmax padded with extra value'''
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x: Tensor) -> Tensor:
+        pad = torch.zeros(x.size(0), 1, x.size(2), device=x.device)
+        x = torch.cat((x, pad), dim=1).softmax(dim=1)
+        return x[:,0:-1,:]
