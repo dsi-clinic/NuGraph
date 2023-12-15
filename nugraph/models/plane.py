@@ -6,7 +6,7 @@ from torch.utils.checkpoint import checkpoint
 
 from torch_geometric.nn import MessagePassing
 
-from .linear import ClassLinear
+from .linear import ClassLinear, PaddedSoftmax
 
 class MessagePassing2D(MessagePassing):
 
@@ -23,7 +23,7 @@ class MessagePassing2D(MessagePassing):
             ClassLinear(2 * (in_features + planar_features),
                         1,
                         num_classes),
-            nn.Softmax(dim=1))
+            PaddedSoftmax())
 
         self.node_net = nn.Sequential(
             ClassLinear(2 * (in_features + planar_features),

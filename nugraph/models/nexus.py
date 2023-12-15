@@ -6,7 +6,7 @@ from torch.utils.checkpoint import checkpoint
 
 from torch_geometric.nn import MessagePassing, SimpleConv
 
-from .linear import ClassLinear
+from .linear import ClassLinear, PaddedSoftmax
 
 class NexusDown(MessagePassing):
     def __init__(self,
@@ -20,7 +20,7 @@ class NexusDown(MessagePassing):
             ClassLinear(planar_features+nexus_features,
                         1,
                         num_classes),
-            nn.Softmax(dim=1))
+            PaddedSoftmax())
 
         self.node_net = nn.Sequential(
             ClassLinear(planar_features+nexus_features,
