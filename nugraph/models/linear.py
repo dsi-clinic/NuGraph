@@ -1,4 +1,5 @@
-from torch import Tensor, tensor_split, cat
+import torch
+from torch import Tensor
 import torch.nn as nn
 
 class ClassLinear(nn.Module):
@@ -16,5 +17,5 @@ class ClassLinear(nn.Module):
             self.net.append(nn.Linear(in_features, out_features))
 
     def forward(self, X: Tensor) -> Tensor:
-        x = tensor_split(X, self.num_classes, dim=1)
-        return cat([ net(x[i]) for i, net in enumerate(self.net) ], dim=1)
+        x = torch.tensor_split(X, self.num_classes, dim=1)
+        return torch.cat([ net(x[i]) for i, net in enumerate(self.net) ], dim=1)
