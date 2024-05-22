@@ -11,6 +11,7 @@ Once dependencies are installed, you can simply clone this repository and instal
 ```
 git clone git@github.com:exatrkx/NuGraph
 pip install --no-deps -e ./NuGraph
+pip install torch-geometric==2.5
 ```
 
 ## Training a model
@@ -21,21 +22,21 @@ You can train the model using a processed graph dataset as input by executing th
 scripts/train.py --help
 ```
 
-As an example, to train the network for semantic segmentation on the Heimdall cluster, one might run
+As an example, to train the network for semantic segmentation and vertex coordinate prediction on the Heimdall cluster, one might run
 
 ```
 scripts/train.py --data-path /raid/uboone/NuGraph2/NG2-paper.gnn.h5 \
-                 --logdir /raid/$USER/logs --name default --version semantic-filter \
-                 --semantic --filter
+                 --logdir /raid/$USER/logs --name default --version semantic-filter-vertex \
+                 --semantic --filter --vertex
 ```
 
-This command would start a network training using the requested input dataset, training with the semantic head enabled, and writing network parameters and metrics to the directory `/raid/$USER/logs/default/semantic-filter`.
+This command would start a network training using the requested input dataset, training with the semantic head enabled, and writing network parameters and metrics to the directory `/raid/$USER/logs/default/semantic-filter-vertex`.
 
 ### Training on SLURM clusters
 
-If you're working on a cluster that uses the SLURM batch submission system, such as the Wilson cluster at Fermilab, then you'll need to submit training via a batch script instead. An example batch script `train_batch.sh` is included in the `scripts` subdirectory. If you're training on the Wilson cluster, you can submit a training job by running
+If you're working on a cluster that uses the SLURM batch submission system, such as the Wilson cluster at Fermilab, then you'll need to submit training via a batch script instead. An example batch script `train_batch_dsi.sh` is included in the `scripts` subdirectory. If you're training on the Wilson cluster, you can submit a training job by running
 ```
-sbatch scripts/train_batch.sh <args>
+sbatch scripts/train_batch_dsi.sh <args>
 ```
 where `<args>` are the same argument you'd pass if you were executing the training script locally.
 
